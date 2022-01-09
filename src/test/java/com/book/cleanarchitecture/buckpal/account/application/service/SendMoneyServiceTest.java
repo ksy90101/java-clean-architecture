@@ -5,8 +5,8 @@ import com.book.cleanarchitecture.buckpal.account.application.port.out.AccountLo
 import com.book.cleanarchitecture.buckpal.account.application.port.out.LoadAccountPort;
 import com.book.cleanarchitecture.buckpal.account.application.port.out.UpdateAccountStatePort;
 import com.book.cleanarchitecture.buckpal.account.domain.Account;
-import com.book.cleanarchitecture.buckpal.account.domain.Money;
 import com.book.cleanarchitecture.buckpal.account.domain.vo.AccountId;
+import com.book.cleanarchitecture.buckpal.account.domain.vo.Money;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -34,7 +34,6 @@ class SendMoneyServiceTest {
 
     @Test
     void givenWithdrawalFails_thenOnlySourceAccountIsLockedAndReleased() {
-
         AccountId sourceAccountId = new AccountId(41L);
         Account sourceAccount = givenAnAccountWithId(sourceAccountId);
 
@@ -44,10 +43,7 @@ class SendMoneyServiceTest {
         givenWithdrawalWillFail(sourceAccount);
         givenDepositWillSucceed(targetAccount);
 
-        SendMoneyCommand command = new SendMoneyCommand(
-                sourceAccountId,
-                targetAccountId,
-                Money.of(300L));
+        SendMoneyCommand command = new SendMoneyCommand(sourceAccountId, targetAccountId, Money.of(300L));
 
         boolean success = sendMoneyService.sendMoney(command);
 
@@ -60,7 +56,6 @@ class SendMoneyServiceTest {
 
     @Test
     void transactionSucceeds() {
-
         Account sourceAccount = givenSourceAccount();
         Account targetAccount = givenTargetAccount();
 

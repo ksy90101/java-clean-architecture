@@ -1,12 +1,14 @@
 package com.book.cleanarchitecture.buckpal.account.domain;
 
 import com.book.cleanarchitecture.buckpal.account.domain.vo.AccountId;
+import com.book.cleanarchitecture.buckpal.account.domain.vo.Money;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
 import static com.book.cleanarchitecture.buckpal.common.ActivityTestData.defaultActivity;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class ActivityWindowTest {
     @Test
@@ -48,8 +50,10 @@ class ActivityWindowTest {
                         .withTargetAccount(account1)
                         .withMoney(Money.of(500)).build());
 
-        assertThat(window.calculateBalance(account1)).isEqualTo(Money.of(-500));
-        assertThat(window.calculateBalance(account2)).isEqualTo(Money.of(500));
+        assertAll(
+                () -> assertThat(window.calculateBalance(account1)).isEqualTo(Money.of(-500)),
+                () -> assertThat(window.calculateBalance(account2)).isEqualTo(Money.of(500))
+        );
     }
 
     private LocalDateTime startDate() {

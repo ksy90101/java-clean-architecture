@@ -26,7 +26,7 @@ public class ActivityJpaEntity {
     @Column
     private Long amount;
 
-    public ActivityJpaEntity() {
+    protected ActivityJpaEntity() {
     }
 
     public ActivityJpaEntity(Long id, LocalDateTime timestamp, Long ownerAccountId, Long sourceAccountId, Long targetAccountId, Long amount) {

@@ -1,6 +1,7 @@
-package com.book.cleanarchitecture.buckpal.account.domain;
+package com.book.cleanarchitecture.buckpal.account.domain.vo;
 
 import java.math.BigInteger;
+import java.util.Objects;
 
 public class Money {
 
@@ -20,19 +21,7 @@ public class Money {
         return this.amount.compareTo(BigInteger.ZERO) >= 0;
     }
 
-    public boolean isNegative() {
-        return this.amount.compareTo(BigInteger.ZERO) < 0;
-    }
-
-    public boolean isPositive() {
-        return this.amount.compareTo(BigInteger.ZERO) > 0;
-    }
-
-    public boolean isGreaterThanOrEqualTo(Money money){
-        return this.amount.compareTo(money.amount) >= 0;
-    }
-
-    public boolean isGreaterThan(Money money){
+    public boolean isGreaterThan(Money money) {
         return this.amount.compareTo(money.amount) >= 1;
     }
 
@@ -50,5 +39,18 @@ public class Money {
 
     public BigInteger getAmount() {
         return amount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Money money = (Money) o;
+        return amount.equals(money.amount);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(amount);
     }
 }

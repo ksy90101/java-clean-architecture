@@ -10,6 +10,7 @@ import com.book.cleanarchitecture.buckpal.shared.PersistenceAdapter;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @PersistenceAdapter
 public class AccountPersistenceAdapter implements LoadAccountPort, UpdateAccountStatePort {
@@ -25,9 +26,7 @@ public class AccountPersistenceAdapter implements LoadAccountPort, UpdateAccount
     }
 
     @Override
-    public Account loadAccount(
-            AccountId accountId,
-            LocalDateTime baselineDate) {
+    public Account loadAccount(AccountId accountId, LocalDateTime baselineDate) {
 
         AccountJpaEntity account =
                 accountRepository.findById(accountId.getValue())
@@ -53,21 +52,18 @@ public class AccountPersistenceAdapter implements LoadAccountPort, UpdateAccount
                 activities,
                 withdrawalBalance,
                 depositBalance);
+    }
 
+    @Override
+    public void updateActivities(Account account) {
+        List<Activity> activities = account.getActivities();
+
+        activities.stream()
+                .filter(activity -> Objects.isNull(activity.getId()))
+                .forEach(activity -> activityRepository.save(accountMapper.mapToJpaEntity(activity)));
     }
 
     private Long orZero(Long value) {
         return value == null ? 0L : value;
     }
-
-
-    @Override
-    public void updateActivities(Account account) {
-        for (Activity activity : account.getActivityWindow().getActivities()) {
-            if (activity.getId() == null) {
-                activityRepository.save(accountMapper.mapToJpaEntity(activity));
-            }
-        }
-    }
-
 }

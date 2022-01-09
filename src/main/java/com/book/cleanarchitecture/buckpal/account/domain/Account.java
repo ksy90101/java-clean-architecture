@@ -1,8 +1,10 @@
 package com.book.cleanarchitecture.buckpal.account.domain;
 
 import com.book.cleanarchitecture.buckpal.account.domain.vo.AccountId;
+import com.book.cleanarchitecture.buckpal.account.domain.vo.Money;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 public class Account {
@@ -19,12 +21,6 @@ public class Account {
         this.activityWindow = activityWindow;
     }
 
-    public static Account withoutId(
-            Money baselineBalance,
-            ActivityWindow activityWindow) {
-        return new Account(null, baselineBalance, activityWindow);
-    }
-
     public static Account withId(
             AccountId accountId,
             Money baselineBalance,
@@ -32,27 +28,18 @@ public class Account {
         return new Account(accountId, baselineBalance, activityWindow);
     }
 
-    public Optional<AccountId> getId() {
-        return Optional.ofNullable(this.id);
-    }
-
     public Money calculateBalance() {
         return this.baselineBalance.plus(this.activityWindow.calculateBalance(this.id));
     }
 
     public boolean withdraw(Money money, AccountId targetAccountId) {
-
         if (!mayWithdraw(money)) {
             return false;
         }
 
-        Activity withdrawal = new Activity(
-                this.id,
-                this.id,
-                targetAccountId,
-                LocalDateTime.now(),
-                money);
+        Activity withdrawal = new Activity(this.id, this.id, targetAccountId, LocalDateTime.now(), money);
         this.activityWindow.addActivity(withdrawal);
+
         return true;
     }
 
@@ -61,21 +48,17 @@ public class Account {
     }
 
     public boolean deposit(Money money, AccountId sourceAccountId) {
-        Activity deposit = new Activity(
-                this.id,
-                sourceAccountId,
-                this.id,
-                LocalDateTime.now(),
-                money);
+        Activity deposit = new Activity(this.id, sourceAccountId, this.id, LocalDateTime.now(), money);
         this.activityWindow.addActivity(deposit);
+
         return true;
     }
 
-    public Money getBaselineBalance() {
-        return baselineBalance;
+    public Optional<AccountId> getId() {
+        return Optional.ofNullable(this.id);
     }
 
-    public ActivityWindow getActivityWindow() {
-        return activityWindow;
+    public List<Activity> getActivities() {
+        return activityWindow.getActivities();
     }
 }

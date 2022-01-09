@@ -3,9 +3,9 @@ package com.book.cleanarchitecture.buckpal.account.adapter.out.persistence;
 import com.book.cleanarchitecture.buckpal.account.domain.Account;
 import com.book.cleanarchitecture.buckpal.account.domain.Activity;
 import com.book.cleanarchitecture.buckpal.account.domain.ActivityWindow;
-import com.book.cleanarchitecture.buckpal.account.domain.Money;
 import com.book.cleanarchitecture.buckpal.account.domain.vo.AccountId;
 import com.book.cleanarchitecture.buckpal.account.domain.vo.ActivityId;
+import com.book.cleanarchitecture.buckpal.account.domain.vo.Money;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,19 +13,11 @@ import java.util.stream.Collectors;
 
 @Component
 class AccountMapper {
-
-    Account mapToDomainEntity(
-            AccountJpaEntity account,
-            List<ActivityJpaEntity> activities,
-            Long withdrawalBalance,
-            Long depositBalance) {
-
+    Account mapToDomainEntity(AccountJpaEntity account, List<ActivityJpaEntity> activities,
+                              Long withdrawalBalance, Long depositBalance) {
         Money baselineBalance = Money.of(depositBalance).minus(Money.of(withdrawalBalance));
-        return Account.withId(
-                new AccountId(account.getId()),
-                baselineBalance,
-                mapToActivityWindow(activities));
 
+        return Account.withId(new AccountId(account.getId()), baselineBalance, mapToActivityWindow(activities));
     }
 
     ActivityWindow mapToActivityWindow(List<ActivityJpaEntity> activities) {
@@ -51,5 +43,4 @@ class AccountMapper {
                 activity.getTargetAccountId().getValue(),
                 activity.getMoney().getAmount().longValue());
     }
-
 }

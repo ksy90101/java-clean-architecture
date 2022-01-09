@@ -30,10 +30,10 @@ public class SendMoneyService implements SendMoneyUseCase {
 
     @Override
     public boolean sendMoney(SendMoneyCommand command) {
-
         checkThreshold(command);
 
-        LocalDateTime baselineDate = LocalDateTime.now().minusDays(10);
+        LocalDateTime baselineDate = LocalDateTime.now()
+                .minusDays(10);
 
         Account sourceAccount = loadAccountPort.loadAccount(
                 command.getSourceAccountId(),
@@ -55,9 +55,11 @@ public class SendMoneyService implements SendMoneyUseCase {
         }
 
         accountLock.lockAccount(targetAccountId);
+
         if (!targetAccount.deposit(command.getMoney(), sourceAccountId)) {
             accountLock.releaseAccount(sourceAccountId);
             accountLock.releaseAccount(targetAccountId);
+
             return false;
         }
 
@@ -66,6 +68,7 @@ public class SendMoneyService implements SendMoneyUseCase {
 
         accountLock.releaseAccount(sourceAccountId);
         accountLock.releaseAccount(targetAccountId);
+
         return true;
     }
 

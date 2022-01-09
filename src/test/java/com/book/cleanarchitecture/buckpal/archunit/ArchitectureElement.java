@@ -47,10 +47,21 @@ public class ArchitectureElement {
     }
 
     String fullQualifiedPackage(String relativePackage) {
-        return this.basePackage + "." + relativePackage;
+        StringBuilder fullQualifiedPackage = new StringBuilder();
+        fullQualifiedPackage.append(this.basePackage)
+                .append(".")
+                .append(relativePackage);
+
+        return fullQualifiedPackage.toString();
     }
 
-    void denyEmptyPackage(String packageName) {
+    void denyEmptyPackages(List<String> packages) {
+        for (String packageName : packages) {
+            denyEmptyPackage(packageName);
+        }
+    }
+
+    private void denyEmptyPackage(String packageName) {
         classes()
                 .that()
                 .resideInAPackage(matchAllClassesInPackage(packageName))
@@ -59,12 +70,8 @@ public class ArchitectureElement {
     }
 
     private JavaClasses classesInPackage(String packageName) {
-        return new ClassFileImporter().importPackages(packageName);
-    }
+        ClassFileImporter classFileImporter = new ClassFileImporter();
 
-    void denyEmptyPackages(List<String> packages) {
-        for (String packageName : packages) {
-            denyEmptyPackage(packageName);
-        }
+        return classFileImporter.importPackages(packageName);
     }
 }

@@ -1,7 +1,7 @@
 package com.book.cleanarchitecture.buckpal.account.application.port.in;
 
-import com.book.cleanarchitecture.buckpal.account.domain.Money;
 import com.book.cleanarchitecture.buckpal.account.domain.vo.AccountId;
+import com.book.cleanarchitecture.buckpal.account.domain.vo.Money;
 import com.book.cleanarchitecture.buckpal.shared.SelfValidating;
 
 import javax.validation.constraints.NotNull;

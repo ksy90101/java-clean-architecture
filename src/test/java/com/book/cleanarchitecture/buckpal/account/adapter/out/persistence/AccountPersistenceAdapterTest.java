@@ -2,8 +2,8 @@ package com.book.cleanarchitecture.buckpal.account.adapter.out.persistence;
 
 import com.book.cleanarchitecture.buckpal.account.domain.Account;
 import com.book.cleanarchitecture.buckpal.account.domain.ActivityWindow;
-import com.book.cleanarchitecture.buckpal.account.domain.Money;
 import com.book.cleanarchitecture.buckpal.account.domain.vo.AccountId;
+import com.book.cleanarchitecture.buckpal.account.domain.vo.Money;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -30,7 +30,7 @@ class AccountPersistenceAdapterTest {
     void loadsAccount() {
         Account account = adapterUnderTest.loadAccount(new AccountId(1L), LocalDateTime.of(2018, 8, 10, 0, 0));
 
-        assertThat(account.getActivityWindow().getActivities()).hasSize(2);
+        assertThat(account.getActivities()).hasSize(2);
         assertThat(account.calculateBalance()).isEqualTo(Money.of(500));
     }
 

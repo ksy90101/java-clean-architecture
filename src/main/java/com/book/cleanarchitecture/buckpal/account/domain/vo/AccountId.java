@@ -1,6 +1,7 @@
 package com.book.cleanarchitecture.buckpal.account.domain.vo;
 
 public class AccountId {
+
     private final Long value;
 
     public AccountId(Long value) {

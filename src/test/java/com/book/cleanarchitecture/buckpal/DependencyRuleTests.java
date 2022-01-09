@@ -7,26 +7,23 @@ import org.junit.jupiter.api.Test;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 
 class DependencyRuleTests {
+
+    // @formatter:off
     @Test
     void validateRegistrationContextArchitecture() {
-        HexagonalArchitecture.boundedContext("io.reflectoring.buckpal.account")
-
+        HexagonalArchitecture.boundedContext("com.book.cleanarchitecture.buckpal.account")
                 .withDomainLayer("domain")
-
                 .withAdaptersLayer("adapter")
-                .incoming("in.web")
-                .outgoing("out.persistence")
-                .and()
-
+                    .incoming("in.web")
+                    .outgoing("out.persistence")
+                    .and()
                 .withApplicationLayer("application")
-                .services("service")
-                .incomingPorts("port.in")
-                .outgoingPorts("port.out")
-                .and()
-
+                    .services("service")
+                    .incomingPorts("port.in")
+                    .outgoingPorts("port.out")
+                    .and()
                 .withConfiguration("configuration")
-                .check(new ClassFileImporter()
-                        .importPackages("io.reflectoring.buckpal.."));
+                .check(new ClassFileImporter().importPackages("io.reflectoring.buckpal.."));
     }
 
     @Test
