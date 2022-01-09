@@ -10,7 +10,7 @@ class AccountJpaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public AccountJpaEntity() {
+    protected AccountJpaEntity() {
     }
 
     public AccountJpaEntity(Long id) {

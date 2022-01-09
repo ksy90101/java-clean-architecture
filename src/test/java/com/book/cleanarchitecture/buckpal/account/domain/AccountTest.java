@@ -1,6 +1,7 @@
 package com.book.cleanarchitecture.buckpal.account.domain;
 
 import com.book.cleanarchitecture.buckpal.account.domain.vo.AccountId;
+import com.book.cleanarchitecture.buckpal.account.domain.vo.Money;
 import org.junit.jupiter.api.Test;
 
 import static com.book.cleanarchitecture.buckpal.common.AccountTestData.defaultAccount;
@@ -8,6 +9,7 @@ import static com.book.cleanarchitecture.buckpal.common.ActivityTestData.default
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AccountTest {
+
     @Test
     void calculatesBalance() {
         AccountId accountId = new AccountId(1L);

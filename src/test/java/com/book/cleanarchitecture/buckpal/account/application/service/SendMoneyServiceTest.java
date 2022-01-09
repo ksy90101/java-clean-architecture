@@ -5,8 +5,8 @@ import com.book.cleanarchitecture.buckpal.account.application.port.out.AccountLo
 import com.book.cleanarchitecture.buckpal.account.application.port.out.LoadAccountPort;
 import com.book.cleanarchitecture.buckpal.account.application.port.out.UpdateAccountStatePort;
 import com.book.cleanarchitecture.buckpal.account.domain.Account;
-import com.book.cleanarchitecture.buckpal.account.domain.Money;
 import com.book.cleanarchitecture.buckpal.account.domain.vo.AccountId;
+import com.book.cleanarchitecture.buckpal.account.domain.vo.Money;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 

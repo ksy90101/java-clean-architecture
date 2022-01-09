@@ -1,6 +1,7 @@
 package com.book.cleanarchitecture.buckpal.account.domain;
 
 import com.book.cleanarchitecture.buckpal.account.domain.vo.AccountId;
+import com.book.cleanarchitecture.buckpal.account.domain.vo.Money;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -41,18 +42,13 @@ public class Account {
     }
 
     public boolean withdraw(Money money, AccountId targetAccountId) {
-
         if (!mayWithdraw(money)) {
             return false;
         }
 
-        Activity withdrawal = new Activity(
-                this.id,
-                this.id,
-                targetAccountId,
-                LocalDateTime.now(),
-                money);
+        Activity withdrawal = new Activity(this.id, this.id, targetAccountId, LocalDateTime.now(), money);
         this.activityWindow.addActivity(withdrawal);
+
         return true;
     }
 
@@ -61,13 +57,9 @@ public class Account {
     }
 
     public boolean deposit(Money money, AccountId sourceAccountId) {
-        Activity deposit = new Activity(
-                this.id,
-                sourceAccountId,
-                this.id,
-                LocalDateTime.now(),
-                money);
+        Activity deposit = new Activity(this.id, sourceAccountId, this.id, LocalDateTime.now(), money);
         this.activityWindow.addActivity(deposit);
+
         return true;
     }
 

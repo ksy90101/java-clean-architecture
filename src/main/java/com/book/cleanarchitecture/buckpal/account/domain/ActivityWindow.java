@@ -1,6 +1,7 @@
 package com.book.cleanarchitecture.buckpal.account.domain;
 
 import com.book.cleanarchitecture.buckpal.account.domain.vo.AccountId;
+import com.book.cleanarchitecture.buckpal.account.domain.vo.Money;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -48,11 +49,11 @@ public class ActivityWindow {
         return depositBalance.plus(withdrawalBalance.negate());
     }
 
-    public List<Activity> getActivities() {
-        return Collections.unmodifiableList(this.activities);
-    }
-
     public void addActivity(Activity activity) {
         this.activities.add(activity);
+    }
+
+    public List<Activity> getActivities() {
+        return Collections.unmodifiableList(this.activities);
     }
 }

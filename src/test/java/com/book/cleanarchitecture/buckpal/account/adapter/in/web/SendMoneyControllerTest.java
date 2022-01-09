@@ -2,8 +2,8 @@ package com.book.cleanarchitecture.buckpal.account.adapter.in.web;
 
 import com.book.cleanarchitecture.buckpal.account.application.port.in.SendMoneyCommand;
 import com.book.cleanarchitecture.buckpal.account.application.port.in.SendMoneyUseCase;
-import com.book.cleanarchitecture.buckpal.account.domain.Money;
 import com.book.cleanarchitecture.buckpal.account.domain.vo.AccountId;
+import com.book.cleanarchitecture.buckpal.account.domain.vo.Money;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

@@ -9,5 +9,4 @@ class JavaCleanArchitectureApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }

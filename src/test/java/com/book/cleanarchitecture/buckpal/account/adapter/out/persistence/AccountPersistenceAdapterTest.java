@@ -2,8 +2,8 @@ package com.book.cleanarchitecture.buckpal.account.adapter.out.persistence;
 
 import com.book.cleanarchitecture.buckpal.account.domain.Account;
 import com.book.cleanarchitecture.buckpal.account.domain.ActivityWindow;
-import com.book.cleanarchitecture.buckpal.account.domain.Money;
 import com.book.cleanarchitecture.buckpal.account.domain.vo.AccountId;
+import com.book.cleanarchitecture.buckpal.account.domain.vo.Money;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;

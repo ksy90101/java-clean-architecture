@@ -2,16 +2,22 @@ package com.book.cleanarchitecture.buckpal.account.domain;
 
 import com.book.cleanarchitecture.buckpal.account.domain.vo.AccountId;
 import com.book.cleanarchitecture.buckpal.account.domain.vo.ActivityId;
+import com.book.cleanarchitecture.buckpal.account.domain.vo.Money;
 
 import java.time.LocalDateTime;
 
 public class Activity {
 
     private final AccountId ownerAccountId;
+
     private final AccountId sourceAccountId;
+
     private final AccountId targetAccountId;
+
     private final LocalDateTime timestamp;
+
     private final Money money;
+
     private final ActivityId id;
 
     public Activity(ActivityId id, AccountId ownerAccountId, AccountId sourceAccountId, AccountId targetAccountId, LocalDateTime timestamp, Money money) {

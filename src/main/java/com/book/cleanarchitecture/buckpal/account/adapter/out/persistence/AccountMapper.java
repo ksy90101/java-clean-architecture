@@ -3,9 +3,9 @@ package com.book.cleanarchitecture.buckpal.account.adapter.out.persistence;
 import com.book.cleanarchitecture.buckpal.account.domain.Account;
 import com.book.cleanarchitecture.buckpal.account.domain.Activity;
 import com.book.cleanarchitecture.buckpal.account.domain.ActivityWindow;
-import com.book.cleanarchitecture.buckpal.account.domain.Money;
 import com.book.cleanarchitecture.buckpal.account.domain.vo.AccountId;
 import com.book.cleanarchitecture.buckpal.account.domain.vo.ActivityId;
+import com.book.cleanarchitecture.buckpal.account.domain.vo.Money;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
