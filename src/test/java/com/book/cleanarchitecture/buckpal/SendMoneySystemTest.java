@@ -35,14 +35,9 @@ class SendMoneySystemTest {
                 targetAccountId(),
                 transferredAmount());
 
-        then(response.getStatusCode())
-                .isEqualTo(HttpStatus.OK);
-
-        then(sourceAccount().calculateBalance())
-                .isEqualTo(initialSourceBalance.minus(transferredAmount()));
-
-        then(targetAccount().calculateBalance())
-                .isEqualTo(initialTargetBalance.plus(transferredAmount()));
+        then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        then(sourceAccount().calculateBalance()).isEqualTo(initialSourceBalance.minus(transferredAmount()));
+        then(targetAccount().calculateBalance()).isEqualTo(initialTargetBalance.plus(transferredAmount()));
     }
 
     private Account sourceAccount() {
@@ -54,9 +49,7 @@ class SendMoneySystemTest {
     }
 
     private Account loadAccount(AccountId accountId) {
-        return loadAccountPort.loadAccount(
-                accountId,
-                LocalDateTime.now());
+        return loadAccountPort.loadAccount(accountId, LocalDateTime.now());
     }
 
     private ResponseEntity<Object> whenSendMoney(AccountId sourceAccountId, AccountId targetAccountId, Money amount) {
@@ -76,11 +69,6 @@ class SendMoneySystemTest {
 
     private Money transferredAmount() {
         return Money.of(500L);
-    }
-
-    private Money balanceOf(AccountId accountId) {
-        Account account = loadAccountPort.loadAccount(accountId, LocalDateTime.now());
-        return account.calculateBalance();
     }
 
     private AccountId sourceAccountId() {

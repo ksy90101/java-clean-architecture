@@ -7,6 +7,7 @@ import com.book.cleanarchitecture.buckpal.account.application.port.out.UpdateAcc
 import com.book.cleanarchitecture.buckpal.account.domain.Account;
 import com.book.cleanarchitecture.buckpal.account.domain.vo.AccountId;
 import com.book.cleanarchitecture.buckpal.account.domain.vo.Money;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -25,14 +26,12 @@ import static org.mockito.Mockito.times;
 
 class SendMoneyServiceTest {
     private final LoadAccountPort loadAccountPort = mock(LoadAccountPort.class);
-
     private final AccountLock accountLock = mock(AccountLock.class);
-
     private final UpdateAccountStatePort updateAccountStatePort = mock(UpdateAccountStatePort.class);
-
     private final SendMoneyService sendMoneyService = new SendMoneyService(loadAccountPort, accountLock, updateAccountStatePort, moneyTransferProperties());
 
     @Test
+    @DisplayName("계좌 송금 실패 테스트")
     void givenWithdrawalFails_thenOnlySourceAccountIsLockedAndReleased() {
         AccountId sourceAccountId = new AccountId(41L);
         Account sourceAccount = givenAnAccountWithId(sourceAccountId);
@@ -55,6 +54,7 @@ class SendMoneyServiceTest {
     }
 
     @Test
+    @DisplayName("계좌송금 성공 테스트")
     void transactionSucceeds() {
         Account sourceAccount = givenSourceAccount();
         Account targetAccount = givenTargetAccount();
@@ -95,6 +95,7 @@ class SendMoneyServiceTest {
         List<AccountId> updatedAccountIds = accountCaptor.getAllValues()
                 .stream()
                 .map(Account::getId)
+                .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toList());
 
@@ -104,18 +105,15 @@ class SendMoneyServiceTest {
     }
 
     private void givenDepositWillSucceed(Account account) {
-        given(account.deposit(any(Money.class), any(AccountId.class)))
-                .willReturn(true);
+        given(account.deposit(any(Money.class), any(AccountId.class))).willReturn(true);
     }
 
     private void givenWithdrawalWillFail(Account account) {
-        given(account.withdraw(any(Money.class), any(AccountId.class)))
-                .willReturn(false);
+        given(account.withdraw(any(Money.class), any(AccountId.class))).willReturn(false);
     }
 
     private void givenWithdrawalWillSucceed(Account account) {
-        given(account.withdraw(any(Money.class), any(AccountId.class)))
-                .willReturn(true);
+        given(account.withdraw(any(Money.class), any(AccountId.class))).willReturn(true);
     }
 
     private Account givenTargetAccount() {
@@ -128,10 +126,12 @@ class SendMoneyServiceTest {
 
     private Account givenAnAccountWithId(AccountId id) {
         Account account = mock(Account.class);
+
         given(account.getId())
                 .willReturn(Optional.of(id));
         given(loadAccountPort.loadAccount(eq(account.getId().get()), any(LocalDateTime.class)))
                 .willReturn(account);
+
         return account;
     }
 

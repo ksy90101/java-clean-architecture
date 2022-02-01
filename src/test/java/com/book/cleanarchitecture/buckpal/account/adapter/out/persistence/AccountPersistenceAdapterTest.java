@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import static com.book.cleanarchitecture.buckpal.common.AccountTestData.defaultAccount;
 import static com.book.cleanarchitecture.buckpal.common.ActivityTestData.defaultActivity;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DataJpaTest
 @Import({AccountPersistenceAdapter.class, AccountMapper.class})
@@ -30,8 +31,10 @@ class AccountPersistenceAdapterTest {
     void loadsAccount() {
         Account account = adapterUnderTest.loadAccount(new AccountId(1L), LocalDateTime.of(2018, 8, 10, 0, 0));
 
-        assertThat(account.getActivities()).hasSize(2);
-        assertThat(account.calculateBalance()).isEqualTo(Money.of(500));
+        assertAll(
+                () -> assertThat(account.getActivities()).hasSize(2),
+                () -> assertThat(account.calculateBalance()).isEqualTo(Money.of(500))
+        );
     }
 
     @Test
@@ -46,9 +49,11 @@ class AccountPersistenceAdapterTest {
 
         adapterUnderTest.updateActivities(account);
 
-        assertThat(activityRepository.count()).isEqualTo(1);
-
         ActivityJpaEntity savedActivity = activityRepository.findAll().get(0);
-        assertThat(savedActivity.getAmount()).isEqualTo(1L);
+
+        assertAll(
+                () -> assertThat(activityRepository.count()).isEqualTo(1),
+                () -> assertThat(savedActivity.getAmount()).isEqualTo(1L)
+        );
     }
 }
