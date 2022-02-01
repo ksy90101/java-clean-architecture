@@ -29,11 +29,7 @@ class SendMoneySystemTest {
     void sendMoney() {
         Money initialSourceBalance = sourceAccount().calculateBalance();
         Money initialTargetBalance = targetAccount().calculateBalance();
-
-        ResponseEntity<Object> response = whenSendMoney(
-                sourceAccountId(),
-                targetAccountId(),
-                transferredAmount());
+        ResponseEntity<Object> response = whenSendMoney(sourceAccountId(), targetAccountId(), transferredAmount());
 
         then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         then(sourceAccount().calculateBalance()).isEqualTo(initialSourceBalance.minus(transferredAmount()));
