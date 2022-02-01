@@ -10,6 +10,7 @@ import com.book.cleanarchitecture.buckpal.shared.PersistenceAdapter;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @PersistenceAdapter
 public class AccountPersistenceAdapter implements LoadAccountPort, UpdateAccountStatePort {
