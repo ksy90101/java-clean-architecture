@@ -13,6 +13,10 @@ class AccountJpaEntity {
     protected AccountJpaEntity() {
     }
 
+    public AccountJpaEntity(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }

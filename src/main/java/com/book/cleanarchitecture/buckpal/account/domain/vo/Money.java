@@ -1,4 +1,4 @@
-package com.book.cleanarchitecture.buckpal.account.domain.vo;
+package com.book.cleanarchitecture.buckpal.account.domain;
 
 import java.math.BigInteger;
 import java.util.Objects;
@@ -21,7 +21,19 @@ public class Money {
         return this.amount.compareTo(BigInteger.ZERO) >= 0;
     }
 
-    public boolean isGreaterThan(Money money) {
+    public boolean isNegative() {
+        return this.amount.compareTo(BigInteger.ZERO) < 0;
+    }
+
+    public boolean isPositive() {
+        return this.amount.compareTo(BigInteger.ZERO) > 0;
+    }
+
+    public boolean isGreaterThanOrEqualTo(Money money){
+        return this.amount.compareTo(money.amount) >= 0;
+    }
+
+    public boolean isGreaterThan(Money money){
         return this.amount.compareTo(money.amount) >= 1;
     }
 
