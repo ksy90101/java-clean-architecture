@@ -2,97 +2,70 @@ package com.book.cleanarchitecture.buckpal.account.domain;
 
 import com.book.cleanarchitecture.buckpal.account.domain.vo.AccountId;
 import com.book.cleanarchitecture.buckpal.account.domain.vo.Money;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static com.book.cleanarchitecture.buckpal.common.AccountTestData.defaultAccount;
 import static com.book.cleanarchitecture.buckpal.common.ActivityTestData.defaultActivity;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class AccountTest {
 
-    @Test
-    void calculatesBalance() {
-        AccountId accountId = new AccountId(1L);
-        Account account = defaultAccount()
-                .withAccountId(accountId)
-                .withBaselineBalance(Money.of(555L))
-                .withActivityWindow(new ActivityWindow(
-                        defaultActivity()
-                                .withTargetAccount(accountId)
-                                .withMoney(Money.of(999L)).build(),
-                        defaultActivity()
-                                .withTargetAccount(accountId)
-                                .withMoney(Money.of(1L)).build()))
-                .build();
+    private final AccountId accountId = new AccountId(1L);
+    private final Account account = defaultAccount()
+            .withAccountId(accountId)
+            .withBaselineBalance(Money.of(555L))
+            .withActivityWindow(new ActivityWindow(
+                    defaultActivity()
+                            .withTargetAccount(accountId)
+                            .withMoney(Money.of(999L)).build(),
+                    defaultActivity()
+                            .withTargetAccount(accountId)
+                            .withMoney(Money.of(1L)).build()))
+            .build();
 
+    @Test
+    @DisplayName("계좌의 금액 계산하는 메서드")
+    void calculateBalance() {
         Money balance = account.calculateBalance();
 
         assertThat(balance).isEqualTo(Money.of(1555L));
     }
 
     @Test
+    @DisplayName("계좌 송금 성공 테스트")
     void withdrawalSucceeds() {
-        AccountId accountId = new AccountId(1L);
-        Account account = defaultAccount()
-                .withAccountId(accountId)
-                .withBaselineBalance(Money.of(555L))
-                .withActivityWindow(new ActivityWindow(
-                        defaultActivity()
-                                .withTargetAccount(accountId)
-                                .withMoney(Money.of(999L)).build(),
-                        defaultActivity()
-                                .withTargetAccount(accountId)
-                                .withMoney(Money.of(1L)).build()))
-                .build();
-
         boolean success = account.withdraw(Money.of(555L), new AccountId(99L));
 
-        assertThat(success).isTrue();
-        assertThat(account.getActivities()).hasSize(3);
-        assertThat(account.calculateBalance()).isEqualTo(Money.of(1000L));
+        assertAll(
+                () -> assertThat(success).isTrue(),
+                () -> assertThat(account.getActivities()).hasSize(3),
+                () -> assertThat(account.calculateBalance()).isEqualTo(Money.of(1000L))
+        );
     }
 
     @Test
+    @DisplayName("계좌 송금 실패 테스트 (초과된 금액)")
     void withdrawalFailure() {
-        AccountId accountId = new AccountId(1L);
-        Account account = defaultAccount()
-                .withAccountId(accountId)
-                .withBaselineBalance(Money.of(555L))
-                .withActivityWindow(new ActivityWindow(
-                        defaultActivity()
-                                .withTargetAccount(accountId)
-                                .withMoney(Money.of(999L)).build(),
-                        defaultActivity()
-                                .withTargetAccount(accountId)
-                                .withMoney(Money.of(1L)).build()))
-                .build();
+        boolean failure = account.withdraw(Money.of(1556L), new AccountId(99L));
 
-        boolean success = account.withdraw(Money.of(1556L), new AccountId(99L));
-
-        assertThat(success).isFalse();
-        assertThat(account.getActivities()).hasSize(2);
-        assertThat(account.calculateBalance()).isEqualTo(Money.of(1555L));
+        assertAll(
+                () -> assertThat(failure).isFalse(),
+                () -> assertThat(account.getActivities()).hasSize(2),
+                () -> assertThat(account.calculateBalance()).isEqualTo(Money.of(1555L))
+        );
     }
 
     @Test
+    @DisplayName("계좌 예금 성공 테스트")
     void depositSuccess() {
-        AccountId accountId = new AccountId(1L);
-        Account account = defaultAccount()
-                .withAccountId(accountId)
-                .withBaselineBalance(Money.of(555L))
-                .withActivityWindow(new ActivityWindow(
-                        defaultActivity()
-                                .withTargetAccount(accountId)
-                                .withMoney(Money.of(999L)).build(),
-                        defaultActivity()
-                                .withTargetAccount(accountId)
-                                .withMoney(Money.of(1L)).build()))
-                .build();
-
         boolean success = account.deposit(Money.of(445L), new AccountId(99L));
 
-        assertThat(success).isTrue();
-        assertThat(account.getActivities()).hasSize(3);
-        assertThat(account.calculateBalance()).isEqualTo(Money.of(2000L));
+        assertAll(
+                () -> assertThat(success).isTrue(),
+                () -> assertThat(account.getActivities()).hasSize(3),
+                () -> assertThat(account.calculateBalance()).isEqualTo(Money.of(2000L))
+        );
     }
 }

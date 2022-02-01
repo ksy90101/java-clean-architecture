@@ -43,10 +43,6 @@ public class Account {
         return true;
     }
 
-    private boolean mayWithdraw(Money money) {
-        return this.calculateBalance().plus(money.negate()).isPositiveOrZero();
-    }
-
     public boolean deposit(Money money, AccountId sourceAccountId) {
         Activity deposit = new Activity(this.id, sourceAccountId, this.id, LocalDateTime.now(), money);
         this.activityWindow.addActivity(deposit);
@@ -60,5 +56,9 @@ public class Account {
 
     public List<Activity> getActivities() {
         return activityWindow.getActivities();
+    }
+
+    private boolean mayWithdraw(Money money) {
+        return this.calculateBalance().plus(money.negate()).isPositiveOrZero();
     }
 }

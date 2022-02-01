@@ -26,35 +26,19 @@ public class AccountPersistenceAdapter implements LoadAccountPort, UpdateAccount
     }
 
     @Override
-    public Account loadAccount(
-            AccountId accountId,
-            LocalDateTime baselineDate) {
+    public Account loadAccount(AccountId accountId, LocalDateTime baselineDate) {
+        AccountJpaEntity account = accountRepository.findById(accountId.getValue())
+                .orElseThrow(EntityNotFoundException::new);
 
-        AccountJpaEntity account =
-                accountRepository.findById(accountId.getValue())
-                        .orElseThrow(EntityNotFoundException::new);
-
-        List<ActivityJpaEntity> activities =
-                activityRepository.findByOwnerSince(
-                        accountId.getValue(),
-                        baselineDate);
+        List<ActivityJpaEntity> activities = activityRepository.findByOwnerSince(accountId.getValue(), baselineDate);
 
         Long withdrawalBalance = orZero(activityRepository
-                .getWithdrawalBalanceUntil(
-                        accountId.getValue(),
-                        baselineDate));
+                .getWithdrawalBalanceUntil(accountId.getValue(), baselineDate));
 
         Long depositBalance = orZero(activityRepository
-                .getDepositBalanceUntil(
-                        accountId.getValue(),
-                        baselineDate));
+                .getDepositBalanceUntil(accountId.getValue(), baselineDate));
 
-        return accountMapper.mapToDomainEntity(
-                account,
-                activities,
-                withdrawalBalance,
-                depositBalance);
-
+        return accountMapper.mapToDomainEntity(account, activities, withdrawalBalance, depositBalance);
     }
 
     @Override
